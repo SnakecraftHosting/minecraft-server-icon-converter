@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en-gb">
+
+<head>
+    <meta charset="utf-8">
+    <title>Minecraft Server Icon Converter | Snakecraft Hosting</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="og:title" content="Minecraft Server Icon Converter | Snakecraft Hosting" />
+    <meta name="og:site_name" content="Snakecraft Hosting opensource site" />
+    <meta name="og:description" content="convert your image to a Minecraft server compatible icon" />
+    <meta name="og:url" content="https://Snakecrafthosting.github.io/minecraft-server-icon-converter/" />
+    <meta name="og:image" content="ttps://Snakecrafthosting.github.io/minecraft-server-icon-converter/" />
+    <style>
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            min-width: 100%;
+            width: 100%;
+            max-width: 100%;
+            min-height: 100vh;
+        }
+        
+        body {
+            display: flex;
+            flex-direction: column;
+            font-size: 16px;
+            align-items: center;
+            background: #141414;
+            color: white;
+        }
+        
+        h1 {
+            margin-bottom: 4rem;
+        }
+        
+        button {
+            background-image: linear-gradient(#656fe4, #7964e4);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 0.25rem;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        
+        p {
+            font-size: 0.7rem;
+            margin-top: 4px;
+            margin-bottom: 0.83rem;
+        }
+        
+        p.link,
+        A.link {
+            font-size: 16px;
+            margin-top: 1rem;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Minecraft Server Icon Converter</h1>
+    <button class="choose-img" style="background: #EE4F34;">Choose Image</button>
+    <h2>Preview Image</h2>
+    <img src="placeholder.svg" alt="preview" style="width: 128px;height: 128px;">
+    <p>preview is 2x scale</p>
+    <button class="save-img">Save & Download Icon</button>
+    <p class="link"><a class="link" href="https://my.snakecrafthosting.com/index.php?rp=/knowledgebase/20/How-Do-I-Add-A-Server-Icon-To-My-Server.html" target="_blank">how to set a server icon</a></p>
+    <input type="file" accept="image/*" hidden>
+</body>
+<script>
+    const fileInput = document.querySelector("input[type='file']")
+    const previewImg = document.querySelector("img")
+
+
+    fileInput.addEventListener("change", () => {
+        let file = fileInput.files[0];
+        if (!file) return;
+        previewImg.src = URL.createObjectURL(file);
+        previewImg.addEventListener("load", () => {
+            resetFilterBtn.click();
+            document.querySelector(".container").classList.remove("disable");
+        });
+    });
+
+    document.querySelector(".choose-img").addEventListener("click", () => fileInput.click());
+
+    document.querySelector(".save-img").addEventListener("click", () => {
+        const canvas = document.createElement("canvas");
+        const ctx = canvas.getContext("2d");
+        canvas.width = 64;
+        canvas.height = 64;
+        ctx.translate(canvas.width / 2, canvas.height / 2);
+        ctx.drawImage(previewImg, -canvas.width / 2, -canvas.height / 2, canvas.width, canvas.height);
+
+        const link = document.createElement("a");
+        link.download = "server-icon.png";
+        link.href = canvas.toDataURL("image/png");;
+        link.click();
+    });
+</script>
+
+</html>
